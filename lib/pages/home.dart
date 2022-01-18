@@ -1,6 +1,7 @@
-import 'dart:ffi';
+// import 'dart:ffi';
 import 'dart:io';
 
+import 'package:pie_chart/pie_chart.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +70,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Column(
         children: [
-          _showGrapf(),
+           _showGrapf(),
 
           Expanded(
             child: ListView.builder(
@@ -170,10 +171,56 @@ class _HomePageState extends State<HomePage> {
 
     Navigator.pop(context);
   }
-}
 
 
 //Mostrar Graficos
 Widget _showGrapf(){
+Map<String, double> dataMap = new Map();
+
+  bands.forEach((band){
+    dataMap.putIfAbsent(band.name, () => band.votes.toDouble());
+  });
+
+  final List<Color> colorList=[
+    Colors.blue.shade50,
+    Colors.blue.shade200,
+    Colors.pink.shade100,
+    Colors.pink.shade50,
+    Colors.yellow.shade50,
+    Colors.yellow.shade200
+  ];
+
+  
+    
+  return Container(child: PieChart(dataMap: dataMap, 
+      animationDuration: Duration(milliseconds: 800),
+      chartLegendSpacing: 32,
+      chartRadius: MediaQuery.of(context).size.width / 3.2,
+      colorList: colorList,
+      initialAngleInDegree: 0,
+      chartType: ChartType.ring,
+      ringStrokeWidth: 12,
+      centerText: "",
+      legendOptions: LegendOptions(
+        showLegendsInRow: false,
+        legendPosition: LegendPosition.right,
+        showLegends: true,
+        // legendShape: _BoxShape.circle,
+        legendTextStyle: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      chartValuesOptions: ChartValuesOptions(
+        showChartValueBackground: true,
+        showChartValues: true,
+        showChartValuesInPercentage: false,
+        showChartValuesOutside: false,
+        decimalPlaces: 0,
+      ),),
+  width: double.infinity,
+  height: 200,) ;
+}
 
 }
+
+
